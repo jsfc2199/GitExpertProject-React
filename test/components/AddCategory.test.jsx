@@ -17,5 +17,26 @@ describe('Tests in add category component', () => {
     expect(input.value).toBe('saitama')
     
   })
+
+  test('should call onNewCategory if input has value', () => {
+
+    //valor a evaluar
+    const inputValue = 'Saitama'
+
+    render(<AddCategory onNewCategory={() => {}}/>)
+
+    const input = screen.getByRole('textbox')
+    const form = screen.getByRole('form')
+
+    //cambiando valor del input
+    fireEvent.input(input, {target: {value: inputValue}})
+
+    //llamamos la ejecucion del submit
+    fireEvent.submit(form)
+
+    //luego de hacer submit tenemos configurado de que la caja de texto (input) sea vacio
+    expect(input.value).toBe('')
+  })
+  
   
 })
