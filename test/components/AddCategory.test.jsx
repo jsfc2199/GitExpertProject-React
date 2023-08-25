@@ -22,8 +22,9 @@ describe('Tests in add category component', () => {
 
     //valor a evaluar
     const inputValue = 'Saitama'
+    const onNewCategory = jest.fn()
 
-    render(<AddCategory onNewCategory={() => {}}/>)
+    render(<AddCategory onNewCategory={onNewCategory}/>)
 
     const input = screen.getByRole('textbox')
     const form = screen.getByRole('form')
@@ -36,7 +37,31 @@ describe('Tests in add category component', () => {
 
     //luego de hacer submit tenemos configurado de que la caja de texto (input) sea vacio
     expect(input.value).toBe('')
+
+    //evaluamos que la funcion haya sido llamada
+    expect(onNewCategory).toHaveBeenCalled()
+
+    //evaluamos que la funcion se haya llamado al menos una vez
+    expect(onNewCategory).toHaveBeenCalledTimes(1)
+
+    //evaluamos si se llamó con el valor de la caja de texto
+    expect(onNewCategory).toHaveBeenCalledWith(inputValue)
   })
-  
-  
+
+  test('should not call onNewCategory if input has not value', () => {
+ 
+    const onNewCategory = jest.fn()
+    render(<AddCategory onNewCategory={onNewCategory}/>)
+    
+    const form = screen.getByRole('form')
+
+    //llamamos la ejecucion del submit
+    fireEvent.submit(form)
+
+    //evaluamos que la funcion se haya llamado al menos una vez
+    expect(onNewCategory).toHaveBeenCalledTimes(0)
+
+    //evaluamos si se llamó con el valor de la caja de texto
+    expect(onNewCategory).not.toHaveBeenCalled()
+  })
 })
